@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Character Counter Example</title>
+</head>
+<body>
+
+    <!-- Input field -->
+    <label for="matrix-url">Enter a matrix.to URL:</label><br/>
+    <input type="text" id="matrix-url" name="matrix-url"><br/>
+
+    <!-- Output display -->
+    <label for="magnit-url">Result:</label><br/>
+    <input type="text" id="magnit-url" name="magnit-url"><br/>
+
+    <script>
+        const magnitUrlStart = 'https://im.magnit.ru/riot.im/#/room/';
+        // let testMatrixUrl = 'https://matrix.to/#/!EBnsyudJbPsPHEBgay:im.magnit.ru?via=im.magnit.ru';
+        // const testMagnitUrl = 'https://im.magnit.ru/riot.im/#/room/!EBnsyudJbPsPHEBgay:im.magnit.ru';
+
+        // Get the input field and output div by their IDs
+        const matrixInput = document.getElementById('matrix-url');
+        const magnitOutput = document.getElementById('magnit-url');
+
+        // Whenever something is typed or deleted in the input field, update the output display accordingly.
+        matrixInput.addEventListener('input', function() {
+            let matrixUrl = this.value;
+            let roomId = matrixUrl.slice(matrixUrl.indexOf('!'), matrixUrl.indexOf('?'));
+            let magnitUrl = `${magnitUrlStart}${roomId}`;
+            magnitOutput.value = magnitUrl;  
+        });
+    </script>
+
+</body>
+</html>
