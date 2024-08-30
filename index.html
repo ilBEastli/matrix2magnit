@@ -20,7 +20,7 @@
         }
 
         #matrix-url {
-            background-color: AliceBlue; /* Light blue background */
+            background-color: AliceBlue;
         }
 
         #magnit-url {
@@ -36,21 +36,30 @@
         <input type="text" id="matrix-url" name="matrix-url"><br/><br/>
 
         <label for="magnit-url">Новая ссылка:</label><br/>
-        <input type="text" id="magnit-url" name="magnit-url" disabled>
+        <input type="text" id="magnit-url" name="magnit-url" readonly>
     </div>
 
     <script>
         const magnitUrlStart = 'https://im.magnit.ru/riot.im/#/';
+        const magnitUrlPublicRoomPart = 'room/#';
+        const matrixUrlPublicRoomPart = '/#/#';
         const matrixInput = document.getElementById('matrix-url');
         const magnitOutput = document.getElementById('magnit-url');
 
         matrixInput.addEventListener('input', function() {
             const matrixUrl = this.value;
+
+            let publicRoomIdBegin = matrixUrl.indexOf(matrixUrlPublicRoomPart);
+            if (publicRoomIdBegin > -1) {
+                publicRoomIdBegin +=  + matrixUrlPublicRoomPart.length;
+                const roomId = matrixUrl.slice(publicRoomIdBegin);
+                const magnitUrl = `${magnitUrlStart}${magnitUrlPublicRoomPart}${roomId}`;
+                magnitOutput.value = magnitUrl;  
+                return;
+            }
+
             const roomIdBegin = matrixUrl.indexOf('!');
             const roomIdEnd = matrixUrl.indexOf('?');
-            console.log('roomIdBegin', roomIdBegin);
-            console.log('roomIdEnd', roomIdEnd);
-            console.log(roomIdBegin === -1 || roomIdEnd === -1);
             if (roomIdBegin === -1 || roomIdEnd === -1) {
                 magnitOutput.value = 'Неизвестный формат ссылки';
                 return;
