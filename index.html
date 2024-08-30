@@ -2,35 +2,64 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Character Counter Example</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>matrix2magnit</title>
+
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+        }
+        
+        label, input {
+            font-family: 'Arial', sans-serif;
+            font-size: medium;
+            height: 2em;
+            width: 36em;
+            padding-left: calc(1em);
+        }
+
+        #matrix-url {
+            background-color: AliceBlue; /* Light blue background */
+        }
+
+        #magnit-url {
+            color: DarkGreen;
+            font-weight: bold; 
+        }
+    </style>
 </head>
+
 <body>
+    <div class="flex-container">
+        <label for="matrix-url">Введите ссылку с matrix.to:</label><br/>
+        <input type="text" id="matrix-url" name="matrix-url"><br/><br/>
 
-    <!-- Input field -->
-    <label for="matrix-url">Enter a matrix.to URL:</label><br/>
-    <input type="text" id="matrix-url" name="matrix-url"><br/>
-
-    <!-- Output display -->
-    <label for="magnit-url">Result:</label><br/>
-    <input type="text" id="magnit-url" name="magnit-url"><br/>
+        <label for="magnit-url">Новая ссылка:</label><br/>
+        <input type="text" id="magnit-url" name="magnit-url" disabled>
+    </div>
 
     <script>
-        const magnitUrlStart = 'https://im.magnit.ru/riot.im/#/room/';
-        // let testMatrixUrl = 'https://matrix.to/#/!EBnsyudJbPsPHEBgay:im.magnit.ru?via=im.magnit.ru';
-        // const testMagnitUrl = 'https://im.magnit.ru/riot.im/#/room/!EBnsyudJbPsPHEBgay:im.magnit.ru';
-
-        // Get the input field and output div by their IDs
+        const magnitUrlStart = 'https://im.magnit.ru/riot.im/#/';
         const matrixInput = document.getElementById('matrix-url');
         const magnitOutput = document.getElementById('magnit-url');
 
-        // Whenever something is typed or deleted in the input field, update the output display accordingly.
         matrixInput.addEventListener('input', function() {
-            let matrixUrl = this.value;
-            let roomId = matrixUrl.slice(matrixUrl.indexOf('!'), matrixUrl.indexOf('?'));
-            let magnitUrl = `${magnitUrlStart}${roomId}`;
-            magnitOutput.value = magnitUrl;  
+            const matrixUrl = this.value;
+            const roomIdBegin = matrixUrl.indexOf('!');
+            const roomIdEnd = matrixUrl.indexOf('?');
+            console.log('roomIdBegin', roomIdBegin);
+            console.log('roomIdEnd', roomIdEnd);
+            console.log(roomIdBegin === -1 || roomIdEnd === -1);
+            if (roomIdBegin === -1 || roomIdEnd === -1) {
+                magnitOutput.value = 'Неизвестный формат ссылки';
+                return;
+            }
+            const roomId = matrixUrl.slice(roomIdBegin, roomIdEnd);
+            const magnitUrl = `${magnitUrlStart}${roomId}`;
+            magnitOutput.value = magnitUrl;
         });
     </script>
-
 </body>
+
 </html>
